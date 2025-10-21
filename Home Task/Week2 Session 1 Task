@@ -1,0 +1,26 @@
+let tasks = [];
+
+function addTask(task, callback) {
+  tasks.push(task);
+  callback();
+}
+
+const printTasks = () => console.log("Current Tasks:", tasks);
+
+const addMultipleTasks = (...newTasks) => {
+  newTasks.forEach(t => tasks.push(t));
+  printTasks();
+};
+
+let globalVar = "Global Scope";
+
+function showScope() {
+  let localVar = "Local Scope";
+  console.log(globalVar);
+  console.log(localVar);
+}
+
+addTask("Finish homework", printTasks);
+addTask("Read a book", printTasks);
+addMultipleTasks("Go for a walk", "Cook dinner", "Call a friend");
+showScope();

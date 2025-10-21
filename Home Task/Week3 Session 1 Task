@@ -1,0 +1,31 @@
+let products = [
+  { id: 1, name: "Laptop", price: 1000, quantity: 2 },
+  { id: 2, name: "Phone", price: 600, quantity: 0 },
+  { id: 3, name: "Headphones", price: 150, quantity: 5 },
+  { id: 4, name: "Keyboard", price: 100, quantity: 3 }
+];
+
+let availableProducts = products.filter(p => p.quantity > 0);
+let totalValue = products.reduce((total, p) => total + (p.price * p.quantity), 0);
+let removedProduct = products.slice(1, 2);
+products.splice(2, 1);
+let updatedProducts = [...products, { id: 5, name: "Mouse", price: 50, quantity: 4 }];
+
+let product = {
+  id: 6,
+  name: "Monitor",
+  price: 300,
+  quantity: 1,
+  printDetails() {
+    console.log(`ID: ${this.id}, Name: ${this.name}, Price: ${this.price}, Quantity: ${this.quantity}`);
+  }
+};
+
+let { id, name, price, quantity } = product;
+
+console.log("Available Products:", availableProducts);
+console.log("Total Cart Value:", totalValue);
+console.log("Removed Product (using slice):", removedProduct);
+console.log("Updated Products (after splice & spread):", updatedProducts);
+product.printDetails();
+console.log(`Destructured Product -> ID: ${id}, Name: ${name}, Price: ${price}, Quantity: ${quantity}`);

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Feedback Form</title>
+  <style>
+    body { font-family: Arial; display: flex; flex-direction: column; align-items: center; margin-top: 40px; }
+    form { display: flex; flex-direction: column; width: 300px; gap: 10px; }
+    input, select, textarea, button { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    input:focus, select:focus, textarea:focus { border-color: dodgerblue; background-color: #f0f8ff; }
+    .error { color: red; font-size: 0.9em; }
+    .success { color: green; }
+  </style>
+</head>
+<body>
+  <h2>Feedback Form</h2>
+  <form id="feedbackForm">
+    <input type="text" id="name" placeholder="Your Name">
+    <div id="nameError" class="error"></div>
+    <input type="email" id="email" placeholder="Your Email">
+    <div id="emailError" class="error"></div>
+    <select id="rating">
+      <option value="">Select Rating</option>
+      <option value="Excellent">Excellent</option>
+      <option value="Good">Good</option>
+      <option value="Average">Average</option>
+      <option value="Poor">Poor</option>
+    </select>
+    <label><input type="checkbox" id="subscribe"> Subscribe to newsletter</label>
+    <textarea id="comments" placeholder="Your Comments"></textarea>
+    <button type="submit" id="submitBtn">Submit</button>
+    <div id="formMessage"></div>
+  </form>
+
+  <script>
+    const form = document.getElementById("feedbackForm");
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const rating = document.getElementById("rating");
+    const formMessage = document.getElementById("formMessage");
+    const nameError = document.getElementById("nameError");
+    const emailError = document.getElementById("emailError");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      let valid = true;
+      nameError.textContent = "";
+      emailError.textContent = "";
+      formMessage.textContent = "";
+      if (nameInput.value.trim() === "") {
+        nameError.textContent = "Name is required";
+        valid = false;
+      }
+      if (!validateEmail(emailInput.value)) {
+        emailError.textContent = "Invalid email";
+        valid = false;
+      }
+      if (rating.value === "") {
+        formMessage.textContent = "Please select a rating";
+        formMessage.className = "error";
+        valid = false;
+      }
+      if (valid) {
+        formMessage.textContent = "Feedback submitted successfully!";
+        formMessage.className = "success";
+        form.reset();
+      }
+    });
+
+    nameInput.addEventListener("focus", () => nameInput.style.backgroundColor = "#e6f7ff");
+    nameInput.addEventListener("blur", () => nameInput.style.backgroundColor = "white");
+    emailInput.addEventListener("focus", () => emailInput.style.backgroundColor = "#e6f7ff");
+    emailInput.addEventListener("blur", () => emailInput.style.backgroundColor = "white");
+    rating.addEventListener("change", () => formMessage.textContent = `You selected: ${rating.value}`);
+    submitBtn.addEventListener("mouseover", () => submitBtn.style.backgroundColor = "dodgerblue");
+    submitBtn.addEventListener("mouseout", () => submitBtn.style.backgroundColor = "");
+    submitBtn.addEventListener("keydown", e => {
+      if (e.key === "Enter") form.requestSubmit();
+    });
+  </script>
+</body>
+</html>

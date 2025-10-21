@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Crypto Price Ticker</title>
+  <style>
+    body { font-family: Arial; display:flex; flex-direction:column; align-items:center; margin-top:40px; }
+    .ticker { margin:10px; padding:10px; border:1px solid #ccc; border-radius:8px; width:300px; text-align:center; }
+    button { padding:8px 12px; margin:5px; cursor:pointer; }
+    .loading { color: #888; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h2>Live Crypto Price Ticker</h2>
+  <div id="priceContainer"></div>
+  <div id="message" class="loading"></div>
+  <button id="startBtn">Start Updates</button>
+  <button id="stopBtn">Stop Updates</button>
+
+  <script>
+    const priceContainer = document.getElementById("priceContainer");
+    const messageDiv = document.getElementById("message");
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    let intervalId = null;
+    const apiUrl = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd";
+    async function fetchPrices() {
+      messageDiv.textContent = "";
+      let timeoutId = setTimeout(() => {
+        messageDiv.textContent = "Loading prices...";
+        messageDiv.className = "loading";
+      }, 5000);
+      try {
+        const response = await fetch(apiUrl);
+        clearTimeout(timeoutId);
+        if (!response.ok) throw new Error("Network error");
+        const data = await response.json();
+        priceContainer.innerHTML = `
+          <div class="ticker">Bitcoin (BTC): $${data.bitcoin.usd.toFixed(2)}</div>
+          <div class="ticker">Ethereum (ETH): $${data.ethereum.usd.toFixed(2)}</div>
+        `;
+      } catch (err) {
+        clearTimeout(timeoutId);
+        messageDiv.textContent = "Error fetching prices.";
+        messageDiv.className = "error";
+      }
+    }
+    function startUpdates() {
+      if (intervalId) return;
+      fetchPrices();
+      intervalId = setInterval(fetchPrices, 10000);
+    }
+    function stopUpdates() {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+        messageDiv.textContent = "Updates stopped.";
+        messageDiv.className = "";
+      }
+    }
+    startBtn.addEventListener("click", startUpdates);
+    stopBtn.addEventListener("click", stopUpdates);
+    window.addEventListener("load", startUpdates);
+  </script>
+</body>
+</html>

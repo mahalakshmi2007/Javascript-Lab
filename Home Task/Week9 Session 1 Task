@@ -1,0 +1,46 @@
+const activeUsers = new Set();
+const userMetadata = new WeakMap();
+
+function addUser(user) {
+  activeUsers.add(user.id);
+  userMetadata.set(user, { lastActive: new Date() });
+  console.log(`User ${user.id} added`);
+}
+
+function removeUser(user) {
+  activeUsers.delete(user.id);
+  userMetadata.delete(user);
+  console.log(`User ${user.id} removed`);
+}
+
+function updateActivity(user) {
+  if (userMetadata.has(user)) {
+    userMetadata.set(user, { lastActive: new Date() });
+    console.log(`User ${user.id} activity updated`);
+  }
+}
+
+function cleanInactiveUsers(thresholdMinutes) {
+  const now = new Date();
+  for (let user of activeUsers) {
+    for (let [obj, meta] of userMetadata.entries()) {
+      const diff = (now - meta.lastActive) / 60000;
+      if (diff > thresholdMinutes) {
+        removeUser(obj);
+      }
+    }
+  }
+}
+
+let user1 = { id: 1, name: "Alice" };
+let user2 = { id: 2, name: "Bob" };
+
+addUser(user1);
+addUser(user2);
+updateActivity(user1);
+
+console.log("Active Users:", activeUsers);
+console.log("Metadata for user1:", userMetadata.get(user1));
+
+user1 = null;
+setTimeout(() => console.log("After garbage collection simulation"), 2000);

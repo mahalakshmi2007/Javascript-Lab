@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Input Validator</title>
+  <style>
+    body { font-family: Arial; display: flex; flex-direction: column; align-items: center; margin-top: 50px; }
+    form { display: flex; flex-direction: column; width: 300px; gap: 10px; }
+    input { padding: 8px; border: 1px solid #ccc; border-radius: 5px; }
+    .error { color: red; font-size: 0.9em; }
+    .success { color: green; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <h2>Form Input Validator</h2>
+  <form id="validatorForm">
+    <input type="text" id="name" placeholder="Full Name">
+    <div id="nameMsg"></div>
+    <input type="email" id="email" placeholder="Email">
+    <div id="emailMsg"></div>
+    <input type="text" id="phone" placeholder="Phone (1234567890)">
+    <div id="phoneMsg"></div>
+    <input type="password" id="password" placeholder="Password">
+    <div id="passwordMsg"></div>
+    <button type="submit">Submit</button>
+    <div id="formMsg"></div>
+  </form>
+
+  <script>
+    const form = document.getElementById("validatorForm");
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+    const passwordInput = document.getElementById("password");
+    const nameMsg = document.getElementById("nameMsg");
+    const emailMsg = document.getElementById("emailMsg");
+    const phoneMsg = document.getElementById("phoneMsg");
+    const passwordMsg = document.getElementById("passwordMsg");
+    const formMsg = document.getElementById("formMsg");
+
+    const nameRegex = /^[A-Za-z\s]{3,}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+
+    phoneInput.addEventListener("input", () => {
+      phoneInput.value = phoneInput.value.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+    });
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      let valid = true;
+      nameMsg.textContent = nameRegex.test(nameInput.value) ? "✓ Valid name" : "Invalid name (min 3 letters)";
+      emailMsg.textContent = emailRegex.test(emailInput.value) ? "✓ Valid email" : "Invalid email format";
+      phoneMsg.textContent = phoneRegex.test(phoneInput.value) ? "✓ Valid phone" : "Invalid phone number";
+      passwordMsg.textContent = passwordRegex.test(passwordInput.value) ? "✓ Strong password" : "Weak password (must include capital, number, symbol)";
+      [nameMsg, emailMsg, phoneMsg, passwordMsg].forEach(msg => {
+        msg.className = msg.textContent.startsWith("✓") ? "success" : "error";
+      });
+      if (!nameRegex.test(nameInput.value) || !emailRegex.test(emailInput.value) || !phoneRegex.test(phoneInput.value) || !passwordRegex.test(passwordInput.value)) valid = false;
+      formMsg.textContent = valid ? "Form submitted successfully!" : "Please fix the errors above.";
+      formMsg.className = valid ? "success" : "error";
+      if (valid) form.reset();
+    });
+  </script>
+</body>
+</html>

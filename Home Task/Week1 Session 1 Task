@@ -1,0 +1,18 @@
+var num1 = 25;
+let num2 = 5;
+
+const addition = num1 + num2;
+const subtraction = num1 - num2;
+const multiplication = num1 * num2;
+const division = (num2 !== 0) ? (num1 / num2) : "Error: Division by zero";
+const modulus = (num2 !== 0) ? (num1 % num2) : "Error: Division by zero";
+
+console.log("=== Simple JavaScript Calculator ===");
+console.log(`First Number (num1): ${num1}`);
+console.log(`Second Number (num2): ${num2}`);
+console.log(`Addition (+): ${addition}`);
+console.log(`Subtraction (-): ${subtraction}`);
+console.log(`Multiplication (*): ${multiplication}`);
+console.log(`Division (/): ${division}`);
+console.log(`Modulus (%): ${modulus}`);
+console.log("Calculation Complete ✅");

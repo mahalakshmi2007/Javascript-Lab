@@ -1,0 +1,64 @@
+let contacts = [
+  {
+    name: "Alice",
+    phone: "123-456-7890",
+    email: "alice@example.com",
+    displayInfo() {
+      const { name, phone, email } = this;
+      console.log(`Name: ${name}, Phone: ${phone}, Email: ${email}`);
+    }
+  },
+  {
+    name: "Bob",
+    phone: "987-654-3210",
+    email: "bob@example.com",
+    displayInfo() {
+      const { name, phone, email } = this;
+      console.log(`Name: ${name}, Phone: ${phone}, Email: ${email}`);
+    }
+  }
+];
+
+console.log(contacts[0].name);
+console.log(contacts[1]["email"]);
+
+for (let contact of contacts) {
+  contact.displayInfo();
+}
+
+function addContacts(...newContacts) {
+  contacts.push(...newContacts);
+}
+
+addContacts(
+  { name: "Charlie", phone: "555-666-7777", email: "charlie@example.com", displayInfo() { const { name, phone, email } = this; console.log(`Name: ${name}, Phone: ${phone}, Email: ${email}`); } },
+  { name: "Diana", phone: "444-333-2222", email: "diana@example.com", displayInfo() { const { name, phone, email } = this; console.log(`Name: ${name}, Phone: ${phone}, Email: ${email}`); } }
+);
+
+let newContacts = [
+  { name: "Eve", phone: "999-888-7777", email: "eve@example.com", displayInfo() { const { name, phone, email } = this; console.log(`Name: ${name}, Phone: ${phone}, Email: ${email}`); } }
+];
+
+let mergedContacts = [...contacts, ...newContacts];
+
+let contactA = {
+  name: "Frank",
+  phone: "222-111-0000",
+  email: "frank@example.com",
+  displayInfo() {
+    const { name, phone, email } = this;
+    console.log(`Name: ${name}, Phone: ${phone}, Email: ${email}`);
+  }
+};
+
+let contactB = { name: "Grace", phone: "111-222-3333", email: "grace@example.com" };
+
+contactA.displayInfo.call(contactB);
+contactA.displayInfo.apply(contactB);
+let boundDisplay = contactA.displayInfo.bind(contactB);
+boundDisplay();
+
+console.log("All Contacts:");
+for (let c of mergedContacts) {
+  c.displayInfo();
+}

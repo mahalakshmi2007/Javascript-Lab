@@ -1,0 +1,46 @@
+class User {
+  #name;
+  #email;
+  constructor(name, email) {
+    this.#name = name;
+    this.#email = email;
+  }
+  get name() {
+    return this.#name;
+  }
+  set name(newName) {
+    this.#name = newName;
+  }
+  get email() {
+    return this.#email;
+  }
+  set email(newEmail) {
+    if (User.validateEmail(newEmail)) this.#email = newEmail;
+    else console.log("Invalid email format");
+  }
+  static validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+}
+
+User.prototype.logActivity = function(activity) {
+  console.log(`${this.name} performed activity: ${activity}`);
+};
+
+function validateEmailFormat(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+const user1 = new User("Alice", "alice@example.com");
+const user2 = new User("Bob", "bobexample.com");
+
+console.log(user1.name);
+console.log(user1.email);
+user1.logActivity("Logged In");
+
+if (validateEmailFormat(user2.email)) console.log("Valid email");
+else console.log("Invalid email format");
+
+user2.email = "bob@example.com";
+console.log(user2.email);
+user2.logActivity("Updated Profile");

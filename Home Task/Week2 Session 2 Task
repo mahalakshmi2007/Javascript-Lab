@@ -1,0 +1,20 @@
+function reverseWords(sentence) {
+  return sentence.split(" ").reverse().join(" ");
+}
+
+function removeDuplicates(arr) {
+  return [...new Set(arr)];
+}
+
+function countVowels(str) {
+  const vowels = "aeiouAEIOU";
+  return [...str].filter(ch => vowels.includes(ch)).length;
+}
+
+let sentence = "Hello world from JavaScript";
+let array = [1, 2, 2, 3, 4, 4, 5];
+let string = "Beautiful Day";
+
+console.log("Reversed Words:", reverseWords(sentence));
+console.log("Array without Duplicates:", removeDuplicates(array));
+console.log("Vowel Count:", countVowels(string));

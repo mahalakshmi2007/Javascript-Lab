@@ -1,0 +1,30 @@
+class Book {
+  constructor(title, author, publishedYear) {
+    this.title = title;
+    this.author = author;
+    this.publishedYear = new Date(publishedYear);
+  }
+  getSummary() {
+    return `${this.title} by ${this.author}, published in ${this.publishedYear.getFullYear()}`;
+  }
+}
+
+class EBook extends Book {
+  constructor(title, author, publishedYear, fileSize) {
+    super(title, author, publishedYear);
+    this.fileSize = fileSize;
+  }
+  getSummary() {
+    return `${super.getSummary()} [File size: ${this.fileSize}MB]`;
+  }
+}
+
+const book1 = new Book("To Kill a Mockingbird", "Harper Lee", "1960");
+const book2 = new Book("1984", "George Orwell", "1949");
+const ebook1 = new EBook("Digital Fortress", "Dan Brown", "1998", 2.5);
+const ebook2 = new EBook("The Martian", "Andy Weir", "2011", 3.2);
+
+console.log(book1.getSummary());
+console.log(book2.getSummary());
+console.log(ebook1.getSummary());
+console.log(ebook2.getSummary());
